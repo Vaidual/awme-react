@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import Topbar from "./scenes/global/Topbar";
+import Sidebar from "./scenes/global/Sidebar";
+import {CssBaseline, ThemeProvider, useMediaQuery} from "@mui/material";
+import {ProSidebarProvider} from "react-pro-sidebar";
+import {ColorModeContext, useToggleMode} from "./theme";
+import {createTheme} from "@mui/material/styles";
+import {useMemo} from "react";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
+    const startTheme = useMemo(
+        () =>
+            createTheme({
+                palette: {
+                    mode: prefersDarkMode ? 'dark' : 'light',
+                },
+            }),
+        [prefersDarkMode],
+    );
+    const [theme, colorMode] = useToggleMode();
+
+    return (
+        <ColorModeContext.Provider value={colorMode}>
+            <ThemeProvider theme={theme}>
+                <ProSidebarProvider>
+                    <div className="app">
+                        <CssBaseline />
+                        <Sidebar/>
+                        <main>
+                            <Topbar/>
+                        </main>
+                    </div>
+                </ProSidebarProvider>
+            </ThemeProvider>
+        </ColorModeContext.Provider>
+    );
 }
 
 export default App;
