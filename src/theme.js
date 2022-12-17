@@ -69,18 +69,21 @@ const themeOptions = (mode) => {
     }
 }
 export const ColorModeContext = createContext({
-    toggleColorMode: () => {
-    }
+    toggleColorMode: (prevMode) => {},
 });
 
 export const useToggleMode = () => {
-    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-    const [mode, setMode] = useState(prefersDarkMode ? 'dark' : 'light');
+    let preferredMode = localStorage.getItem('mui-mode');
+    const deviceTheme = useMediaQuery('(prefers-color-scheme: dark)') ? 'dark' : 'light';
+    if (!preferredMode) preferredMode = deviceTheme;
+    const [mode, setMode] = useState(preferredMode);
 
     const colorMode = useMemo(
         () => ({
-            toggleColorMode: () => {
-                setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+            toggleColorMode: (prevMode) => {
+                let newMode = prevMode === 'light' ? 'dark' : 'light'
+                setMode(newMode);
+                localStorage.setItem('mui-mode', newMode);
             },
         }),
         [],

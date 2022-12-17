@@ -19,7 +19,7 @@ const Sidebar = () => {
     const [selected, setSelected] = useState('/1');
     const theme = useTheme();
     return (
-            <Box position={"fixed"} left={0} top={44}>
+            <Box height={'100%'}>
                 <ProSidebar style={{borderRightWidth: 0}} rootStyles={{
                     [`.${menuClasses.button}:hover`]: {
                         backgroundColor: tokens(theme.palette.mode).background.paperHover
