@@ -2,7 +2,7 @@ import {createAction, createReducer, createSlice} from "@reduxjs/toolkit";
 
 let initialState = {
     languages: [{key: "ua", name: "Українська"}, {key: "en", name: "English"}],
-    selectedLanguage: "ua"
+    // selectedLanguage: "ua"
 };
 
 const setStatus = (lang) => ({type: 'SET_CUR_LANG', payload: lang})

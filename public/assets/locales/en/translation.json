@@ -2,6 +2,12 @@
   "global": {
     "sidebar": {
       "users" : "Users"
+    },
+    "topbar": {
+      "how_its_works": "How it works",
+      "collar": "Collar",
+      "app": "App",
+      "get_now": "Get now"
     }
   }
 }

@@ -1,25 +1,12 @@
 import Topbar from "./scenes/global/Topbar/Topbar";
 import Sidebar from "./scenes/global/Sidebar/Sidebar";
-import {CssBaseline, ThemeProvider, useMediaQuery} from "@mui/material";
+import {CssBaseline, ThemeProvider} from "@mui/material";
 import {ProSidebarProvider} from "react-pro-sidebar";
 import {ColorModeContext, useToggleMode} from "./theme";
-import {createTheme} from "@mui/material/styles";
-import {useMemo} from "react";
 import {Provider} from "react-redux";
 import store from "./redux/store";
 
 function App() {
-    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-
-    const startTheme = useMemo(
-        () =>
-            createTheme({
-                palette: {
-                    mode: prefersDarkMode ? 'dark' : 'light',
-                },
-            }),
-        [prefersDarkMode],
-    );
     const [theme, colorMode] = useToggleMode();
 
     return (
