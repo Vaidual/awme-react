@@ -19,7 +19,7 @@ function App() {
                         <div className="app">
                             <CssBaseline />
                             <header><Topbar/></header>
-                            <Box position={"fixed"} left={0} top={44} display={"flex"}>
+                            <Box display={"flex"}>
                                 <Sidebar/>
                                 <main className={"content"}>
                                         <Routes>
