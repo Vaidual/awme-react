@@ -1,12 +1,15 @@
-html,
-body,
-#root,
-.app,
-.content {
+.app{
   height: 100%;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  display: flex;
+  flex-grow: 1;
 }
 
 .content {
+  flex-grow: 1;
   margin: 20px;
 }

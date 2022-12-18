@@ -1,7 +1,7 @@
 {
   "global": {
     "sidebar": {
-      "users" : "Користувачі"
+      "users": "Користувачі"
     },
     "topbar": {
       "how_its_works": "Як це працює",
@@ -9,6 +9,41 @@
       "app": "Мобільний додаток",
       "get_now": "Отримати зараз",
       "log_in": "Увійти"
+    },
+    "formErrors": {
+      "onRequiredError": "Обов'язкове поле",
+      "onEmailError": "Неправильний формат адреси",
+      "onPasswordMatchError": "Пароль не збігається",
+      "onMinLengthError": "Поле повинно мати принаймні {{count}} символів"
+    }
+  },
+  "auth": {
+    "register": {
+      "title": "Створи новий awme акаунт",
+      "fields": {
+        "email": "Ел. адрес",
+        "firstName": "Ім'я",
+        "lastName": "Прізвище",
+        "password": "Пароль",
+        "repeatPassword": "Повторити пароль"
+      },
+      "alreadyHaveAccount": "Вже маєте акаунт?"
+    },
+    "buttons": {
+      "rememberMe": "Запам'ятати мене",
+      "signUp": "Зареєструватися",
+      "signIn": "Увійти"
+    },
+    "login": {
+      "title": "Увійти в awme акаунт",
+      "fields": {
+        "email": "Ел. адрес",
+        "password": "Пароль"
+      },
+      "buttons": {
+        "ForgotThePassword": "Забули пароль?"
+      },
+      "dontHaveAccount": "Ще не маєте акаунта?"
     }
   }
 }

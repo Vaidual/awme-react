@@ -6,7 +6,8 @@ import {ColorModeContext, useToggleMode} from "./theme";
 import {Provider} from "react-redux";
 import store from "./redux/store";
 import {Route, Routes} from "react-router-dom";
-import Login from "./scenes/auth/Login";
+import Register from "./scenes/auth/Register/Register";
+import Login from "./scenes/auth/Login/Login";
 
 function App() {
     const [theme, colorMode] = useToggleMode();
@@ -19,14 +20,15 @@ function App() {
                         <div className="app">
                             <CssBaseline />
                             <header><Topbar/></header>
-                            <Box display={"flex"}>
+                            <main className={"main"}>
                                 <Sidebar/>
-                                <main className={"content"}>
-                                        <Routes>
-                                            <Route path="/login" element={<Login/>}/>
-                                        </Routes>
-                                </main>
-                            </Box>
+                                <Box className={"content"} >
+                                    <Routes>
+                                        <Route path="/register" element={<Register/>}/>
+                                        <Route path="/login" element={<Login/>}/>
+                                    </Routes>
+                                </Box>
+                            </main>
                         </div>
                     </ProSidebarProvider>
                 </Provider>

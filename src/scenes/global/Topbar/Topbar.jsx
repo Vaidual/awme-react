@@ -10,7 +10,8 @@ import {useContext, useState} from "react";
 import {ColorModeContext, tokens} from "../../../theme";
 import {useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {Image} from "@mui/icons-material";
 
 const LangDropDown = () => {
 /*    const dispatch = useDispatch();
@@ -94,8 +95,14 @@ const Topbar = () => {
 
     return (
         <Box width={"100%"} top={0}>
-            <Box px="12px" py="10px" display={"flex"} justifyContent={"space-between"}>
-                <IconButton onClick={ () => collapseSidebar() }><MenuIcon/></IconButton>
+            <Box px="12px" py="10px" display={"flex"} justifyContent={"space-between"} alignItems={"center"}>
+                <Box display={"flex"}>
+                    <IconButton onClick={() => collapseSidebar()}><MenuIcon/></IconButton>
+                    <Link to={"/"}><img src={process.env.PUBLIC_URL + 'assets/images/logo.png'} style={{
+                        objectFit: 'scale-down',
+                        width: '100px'
+                    }}/></Link>
+                </Box>
                 <Box>
                     <Button variant="text">{t('global.topbar.how_its_works')}</Button>
                     <Button variant="text">{t('global.topbar.collar')}</Button>

@@ -43,6 +43,11 @@ const themeOptions = (mode) => {
                         },
                         common: {
                             paperHover: '#212121'
+                        },
+                        info: {
+                            main: '#c9e7ff',
+                            light: '#fcfeff',
+                            dark: '#ffffff'
                         }
                     }
                     : {

@@ -1,7 +1,7 @@
 {
   "global": {
     "sidebar": {
-      "users" : "Users"
+      "users": "Users"
     },
     "topbar": {
       "how_its_works": "How it works",
@@ -9,6 +9,41 @@
       "app": "App",
       "get_now": "Get now",
       "log_in": "Log in"
+    },
+    "formErrors": {
+      "onRequiredError": "Required field",
+      "onEmailError": "Email in incorrect format",
+      "onPasswordMatchError": "Password not matching",
+      "onMinLengthError": "Field must contain al least {{count}} symbols"
+    }
+  },
+  "auth": {
+    "register": {
+      "title": "Create a new awme account",
+      "fields": {
+        "email": "Email",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "password": "Password",
+        "repeatPassword": "Repeat Password"
+      },
+      "alreadyHaveAccount": "Already have an awme account?"
+    },
+    "buttons": {
+      "rememberMe": "Remember me",
+      "signUp": "Sign Up",
+      "signIn": "Sign In"
+    },
+    "login": {
+      "title": "Log into awme account",
+      "fields": {
+        "email": "Email",
+        "password": "Password"
+      },
+      "buttons": {
+        "ForgotThePassword": "Forgot your password?"
+      },
+      "dontHaveAccount": "Don't have an awme account yet?"
     }
   }
 }
