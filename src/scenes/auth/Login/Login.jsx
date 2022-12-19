@@ -19,11 +19,8 @@ import {useTranslation} from "react-i18next";
 import {tokens} from "../../../theme";
 
 const defaultValues = {
-    firstName: '',
-    lastName: '',
     email: '',
     password: '',
-    repeatPassword: '',
 };
 
 function Login() {
@@ -47,9 +44,10 @@ function Login() {
         setIsRequestFetching(true);
 
         authAPI.login(data).then(value => {
+            setLoginError({error: null, show: false});
             console.log(value);
         }).catch(function (error) {
-            setLoginError({error: error.response.data, show: true})
+            setLoginError({error: error.response ? error.response.data : error.message, show: true})
         }).finally(function () {
             setIsRequestFetching(false);
         });

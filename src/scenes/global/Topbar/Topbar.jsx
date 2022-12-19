@@ -1,22 +1,22 @@
 import {Box, Button, IconButton, List, ListItem, useTheme} from "@mui/material";
 import PersonIcon from '@mui/icons-material/Person';
 import LanguageIcon from '@mui/icons-material/Language';
-import { useProSidebar} from "react-pro-sidebar";
+import {useProSidebar} from "react-pro-sidebar";
 import MenuIcon from "@mui/icons-material/Menu";
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import {useContext, useState} from "react";
 
 import {ColorModeContext, tokens} from "../../../theme";
-import {useSelector} from "react-redux";
+import {useSelector, useStore} from "react-redux";
 import {useTranslation} from "react-i18next";
 import {Link, useNavigate} from "react-router-dom";
 import {Image} from "@mui/icons-material";
 
 const LangDropDown = () => {
-/*    const dispatch = useDispatch();
-    dispatch(setLanguage(lang));
-    const currentLanguage = useSelector((state) => state.sidebar.selectedLanguage);*/
+    /*    const dispatch = useDispatch();
+        dispatch(setLanguage(lang));
+        const currentLanguage = useSelector((state) => state.sidebar.selectedLanguage);*/
     const toggleLangMenu = (isOpened) => {
         if (isOpened)
             setLangMenuOptions({opacity: 1, display: 'block'});
@@ -34,15 +34,19 @@ const LangDropDown = () => {
     let languages = useSelector((state) => state.sidebar.languages)
         .map((lang) =>
             <ListItem
-                sx={{cursor: 'pointer',
+                sx={{
+                    cursor: 'pointer',
                     padding: '0.7em 0.5em',
                     margin: '0.3em 0',
                     borderRadius: '0.5em',
                     ":hover": {color: theme.palette.text.primary},
-                    ".active":{color: 'deepskyblue'},
-                    color: lang.key === i18n.language ? theme.palette.primary.main : tokens().text.grey}}
+                    ".active": {color: 'deepskyblue'},
+                    color: lang.key === i18n.language ? theme.palette.primary.main : tokens().text.grey
+                }}
                 key={lang.key}
-                onClick={() => {onLangChange(lang.key)}}
+                onClick={() => {
+                    onLangChange(lang.key)
+                }}
                 value={lang.key}
                 className={`${lang.key === i18n.language && 'active'}`}>
                 {lang.name}</ListItem>)
@@ -59,24 +63,29 @@ const LangDropDown = () => {
                 opacity: langMenuOptions.opacity,
                 display: langMenuOptions.display,
                 transition: '0.2s',
-                transform: 'translateX(-60%)'}}
+                transform: 'translateX(-60%)'
+            }}
             >
-                <Box sx={{height: 0,
+                <Box sx={{
+                    height: 0,
                     position: 'absolute',
                     width: 0,
                     top: '-12px',
                     left: '125px',
                     border: '10px solid transparent',
-                    borderBottomColor: theme.palette.background.paper}}
+                    borderBottomColor: theme.palette.background.paper
+                }}
                 />
-                <List sx={{listStyle: 'none',
+                <List sx={{
+                    listStyle: 'none',
                     boxShadow: '0px 4px 16px 0px rgb(0 0 0 / 14%)',
                     padding: '0.2em 0.5em',
                     background: theme.palette.background.paper,
                     borderRadius: '0.5em',
                     color: '#a0a0a0',
                     width: '12em',
-                    top: '8px'}}
+                    top: '8px'
+                }}
                 >{languages}</List>
             </Box>
         </Box>
@@ -84,7 +93,9 @@ const LangDropDown = () => {
 }
 
 const Topbar = () => {
-    const { collapseSidebar } = useProSidebar();
+    const user = useSelector((state) => state.user.user);
+
+    const {collapseSidebar} = useProSidebar();
 
     const {t} = useTranslation();
 
@@ -111,13 +122,13 @@ const Topbar = () => {
                 </Box>
                 <Box display={"flex"} flexDirection={"row"}>
                     <IconButton onClick={() => colorMode.toggleColorMode(theme.palette.mode)}>
-                        {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+                        {theme.palette.mode === 'dark' ? <Brightness7Icon/> : <Brightness4Icon/>}
                     </IconButton>
                     <LangDropDown/>
-{/*                    <IconButton>
-                        <PersonIcon/>
-                    </IconButton>*/}
-                    <Button variant="contained" onClick={() => navigate('/login')}>{t('global.topbar.log_in')}</Button>
+                    {user ?
+                        <IconButton><PersonIcon/></IconButton> :
+                        <Button variant="contained"
+                                onClick={() => navigate('/login')}>{t('global.topbar.log_in')}</Button>}
                 </Box>
             </Box>
         </Box>
