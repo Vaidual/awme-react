@@ -14,9 +14,11 @@ import * as yup from "yup";
 import {Formik} from "formik";
 import {Link} from "react-router-dom";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
-import {authAPI} from "../../../api/api";
+import {authAPI, userAPI} from "../../../api/api";
 import {useTranslation} from "react-i18next";
 import {tokens} from "../../../theme";
+import {getMe, login, setMe} from "../../../redux/slices/authSlice";
+import {useDispatch} from "react-redux";
 
 const defaultValues = {
     email: '',
@@ -40,11 +42,15 @@ function Login() {
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
     const [isRequestFetching, setIsRequestFetching] = React.useState(false);
+    const dispatch = useDispatch();
     const handleFormSubmit = (data) => {
         setIsRequestFetching(true);
-
-        authAPI.login(data).then(value => {
+        dispatch(login(data));
+/*        authAPI.login(data).then(value => {
             setLoginError({error: null, show: false});
+            userAPI.getMe().then(response => {
+                console.log(response);
+            })
             console.log(value);
         }).catch(function (error) {
             setLoginError({error: error.response ? error.response.data : error.message, show: true})
@@ -53,7 +59,7 @@ function Login() {
         });
         new Promise(resolve => setTimeout(resolve, 1000)).then(() => {
             if (isRequestFetching) setLoginError({error: null, show: false});
-        })
+        })*/
     };
 
     return (
@@ -132,9 +138,11 @@ function Login() {
                                       to={"forgot-password"}>
                                     {t('auth.login.buttons.ForgotThePassword')}</Link>
                             </Box>
-                            <Button type="submit" color="secondary" variant="contained" fullWidth sx={{height: '44px', marginBottom: '10px'}}
+                            <Button type="submit" color="secondary" variant="contained" fullWidth
+                                    sx={{height: '44px', marginBottom: '10px'}}
                                     disabled={isRequestFetching}>
-                                {!isRequestFetching ? t('auth.buttons.signIn') : <CircularProgress color={"secondary"} size={'30px'}/>}
+{/*                                {!isRequestFetching ? t('auth.buttons.signIn') :
+                                    <CircularProgress color={"secondary"} size={'30px'}/>}*/}
                             </Button>
                             <Box display={"flex"} justifyContent={"center"}>
                                 <Typography mr={'4px'} color={tokens(theme.palette.mode).text.grey}>

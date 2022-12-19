@@ -93,7 +93,7 @@ const LangDropDown = () => {
 }
 
 const Topbar = () => {
-    const user = useSelector((state) => state.user.user);
+    const user = useSelector((state) => state.auth.user);
 
     const {collapseSidebar} = useProSidebar();
 

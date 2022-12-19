@@ -1,12 +1,11 @@
 import {combineReducers} from "redux";
-import globalReducer from "./slices/globalSlice";
 import {configureStore} from "@reduxjs/toolkit";
-import globalSlicer from "./slices/globalSlice";
-import userSlicer from "./slices/userSlice";
+import globalReducer from "./slices/globalSlice";
+import authReducer from "./slices/authSlice";
 
 let reducers = combineReducers({
-    sidebar: globalSlicer,
-    user: userSlicer
+    sidebar: globalReducer,
+    auth: authReducer
 });
 
 const store = configureStore({

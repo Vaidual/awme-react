@@ -17,6 +17,8 @@ import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {authAPI} from "../../../api/api";
 import {useTranslation} from "react-i18next";
 import {tokens} from "../../../theme";
+import {setIsAuthorized} from "../../../redux/slices/authSlice";
+import {useDispatch} from "react-redux";
 
 const defaultValues = {
     firstName: '',
@@ -37,6 +39,8 @@ function Register() {
         repeatPassword: yup.string().required(t('global.formErrors.onRequiredError')).oneOf([yup.ref('password')], t('global.formErrors.onPasswordMatchError')),
     });
 
+    const dispatch = useDispatch();
+
     const isNonMobile = useMediaQuery("(min-width:600px)");
     const theme = useTheme();
 
@@ -51,6 +55,7 @@ function Register() {
 
         const {repeatPassword, ...data} = values
         authAPI.register(data).then(value => {
+            dispatch(setIsAuthorized(true));
             console.log(value);
         }).catch(function (error) {
             setRegisterError({error: error.response ? error.response.data : error.message, show: true})
