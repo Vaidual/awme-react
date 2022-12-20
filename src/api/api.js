@@ -18,15 +18,15 @@ instance.interceptors.response.use(
 
 function handleError(error) {
     return (error.response ?
-        {error: error.response.data, code: error.response.status} : {error: 'The server is unavailable', code: 503})
+        {message: error.response.data, code: error.response.status} : {message: 'The server is unavailable', code: 503})
 }
 
 export const authAPI = {
     register(data) {
+        console.log(data)
         return instance.post(`auth/register`, data);
     },
     login(data) {
-        console.log(instance.post(`auth/login`, data));
         return instance.post(`auth/login`, data);
     }
 }

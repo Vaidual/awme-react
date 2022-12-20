@@ -12,12 +12,11 @@ import {
 } from "@mui/material";
 import * as yup from "yup";
 import {Formik} from "formik";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
-import {authAPI, userAPI} from "../../../api/api";
 import {useTranslation} from "react-i18next";
 import {tokens} from "../../../theme";
-import {getMe, login, setMe} from "../../../redux/slices/authSlice";
+import {login} from "../../../redux/slices/authSlice";
 import {useDispatch} from "react-redux";
 
 const defaultValues = {
@@ -26,40 +25,39 @@ const defaultValues = {
 };
 
 function Login() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const {t} = useTranslation();
+    const isNonMobile = useMediaQuery("(min-width:600px)");
+    const theme = useTheme();
+
+    const [showPassword, setShowPassword] = React.useState(false);
+    const [loginError, setLoginError] = React.useState({show: false, error: null});
+    const [isRequestFetching, setIsRequestFetching] = React.useState(false);
 
     const schema = yup.object().shape({
         email: yup.string().email(t('global.formErrors.onEmailError')).required(t('global.formErrors.onRequiredError')),
         password: yup.string().required(t('global.formErrors.onRequiredError')),
     });
 
-    const isNonMobile = useMediaQuery("(min-width:600px)");
-    const theme = useTheme();
-
-    const [showPassword, setShowPassword] = React.useState(false);
-
-    const [loginError, setLoginError] = React.useState({show: false, error: null});
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-    const [isRequestFetching, setIsRequestFetching] = React.useState(false);
-    const dispatch = useDispatch();
     const handleFormSubmit = (data) => {
         setIsRequestFetching(true);
-        dispatch(login(data));
-/*        authAPI.login(data).then(value => {
-            setLoginError({error: null, show: false});
-            userAPI.getMe().then(response => {
-                console.log(response);
+        dispatch(login(data))
+            .unwrap()
+            .then(() => {
+                setLoginError({error: null, show: false});
+                navigate("/");
             })
-            console.log(value);
-        }).catch(function (error) {
-            setLoginError({error: error.response ? error.response.data : error.message, show: true})
-        }).finally(function () {
+            .catch((error) => {
+                setLoginError({error: error.message, show: true})
+            }).finally(function () {
             setIsRequestFetching(false);
-        });
+            });
         new Promise(resolve => setTimeout(resolve, 1000)).then(() => {
             if (isRequestFetching) setLoginError({error: null, show: false});
-        })*/
+        })
     };
 
     return (
@@ -141,8 +139,8 @@ function Login() {
                             <Button type="submit" color="secondary" variant="contained" fullWidth
                                     sx={{height: '44px', marginBottom: '10px'}}
                                     disabled={isRequestFetching}>
-{/*                                {!isRequestFetching ? t('auth.buttons.signIn') :
-                                    <CircularProgress color={"secondary"} size={'30px'}/>}*/}
+                                {!isRequestFetching ? t('auth.buttons.signIn') :
+                                    <CircularProgress color={"secondary"} size={'30px'}/>}
                             </Button>
                             <Box display={"flex"} justifyContent={"center"}>
                                 <Typography mr={'4px'} color={tokens(theme.palette.mode).text.grey}>

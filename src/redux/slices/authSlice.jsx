@@ -1,11 +1,13 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {authAPI, userAPI} from "../../api/api";
 import {useNavigate} from "react-router-dom";
+import jwt_decode from "jwt-decode";
 
 const initialState = {
-    user: null
+    user: null,
+    userId: null,
+    roles: []
 };
-
 
 const authSlice = createSlice({
     initialState,
@@ -14,8 +16,19 @@ const authSlice = createSlice({
         logout: () => initialState,
         setUser: (state, action) => {
             state.user = action.payload;
-            console.log(state.user);
-        }
+        },
+        setTokenInfo: (state, action) => {
+            const token = localStorage.getItem("accessToken")
+            if (!token) return;
+            const data = jwt_decode(token)
+            const isTokenExpired =  Date.now() >= (JSON.parse(atob(token.split('.')[1]))).exp * 1000;
+            if (isTokenExpired) {
+                localStorage.removeItem("accessToken");
+                return;
+            }
+            state.userId = data.id;
+            state.roles = [...data['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']];
+        },
     }
 });
 
@@ -23,44 +36,43 @@ export const login = createAsyncThunk(
     "auth/login",
     async (data, thunkAPI) => {
         try {
-            const response = await authAPI.login(data);
-            return { user: data };
-        } catch (error) {
-            return thunkAPI.rejectWithValue();
+            const token = await authAPI.login(data).then(response => response.data);
+            localStorage.setItem("accessToken", token);
+            thunkAPI.dispatch(authSlice.actions.setTokenInfo());
+
+        } catch(e) {
+            return thunkAPI.rejectWithValue(e);
         }
     }
 );
 
-export const login = (data) => (dispatch) => {
-    console.log(11)
-    const navigate = useNavigate();
-    authAPI.login(data)
-        .then(response => {
-            console.log(11)
-            dispatch(getMe())
-            navigate("/");
-        })
-        .catch(error => {
-            console.log(11)
-            return error;
-        });
-}
+export const register = createAsyncThunk(
+    "auth/register",
+    async (data, thunkAPI) => {
+        try {
+            const token = await authAPI.register(data).then(response => response.data.token);
+            console.log(token)
+            localStorage.setItem("accessToken", token);
+            thunkAPI.dispatch(authSlice.actions.setTokenInfo());
 
-export const getMe = () => (dispatch) => {
+        } catch(e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
 
-    userAPI.getMe()
-        .then(response => {
-            dispatch(setMe())
-        })
-        .catch(error => {
-            return Promise.resolve({error: error.response ? error.response.data : error.message});
-        });
-}
-export const setMe = (user) => (dispatch) => {
-    dispatch(setUser(user));
-}
-
+export const getUser = createAsyncThunk(
+    "users/me",
+    async (_,thunkAPI) => {
+        try {
+            const user = await userAPI.getMe().then(response => response.data);
+            thunkAPI.dispatch(setUser(user));
+        } catch(e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
 
 export default authSlice.reducer;
 
-export const {logout, setUser, setIsAuthorized} = authSlice.actions;
+export const {logout, setUser, setIsAuthorized, setTokenInfo} = authSlice.actions;

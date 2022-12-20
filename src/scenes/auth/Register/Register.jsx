@@ -12,12 +12,11 @@ import {
 } from "@mui/material";
 import * as yup from "yup";
 import {Formik} from "formik";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
-import {authAPI} from "../../../api/api";
 import {useTranslation} from "react-i18next";
 import {tokens} from "../../../theme";
-import {setIsAuthorized} from "../../../redux/slices/authSlice";
+import {register} from "../../../redux/slices/authSlice";
 import {useDispatch} from "react-redux";
 
 const defaultValues = {
@@ -30,6 +29,14 @@ const defaultValues = {
 
 function Register() {
     const {t} = useTranslation();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const isNonMobile = useMediaQuery("(min-width:600px)");
+    const theme = useTheme();
+
+    const [showPassword, setShowPassword] = React.useState(false);
+    const [registerError, setRegisterError] = React.useState({show: false, error: null});
+    const [isRequestFetching, setIsRequestFetching] = React.useState(false);
 
     const schema = yup.object().shape({
         firstName: yup.string().required(t('global.formErrors.onRequiredError')),
@@ -39,27 +46,20 @@ function Register() {
         repeatPassword: yup.string().required(t('global.formErrors.onRequiredError')).oneOf([yup.ref('password')], t('global.formErrors.onPasswordMatchError')),
     });
 
-    const dispatch = useDispatch();
 
-    const isNonMobile = useMediaQuery("(min-width:600px)");
-    const theme = useTheme();
-
-    const [showPassword, setShowPassword] = React.useState(false);
-
-    const [registerError, setRegisterError] = React.useState({show: false, error: null});
     const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-    const [isRequestFetching, setIsRequestFetching] = React.useState(false);
     const handleFormSubmit = (values) => {
         setIsRequestFetching(true);
-
         const {repeatPassword, ...data} = values
-        authAPI.register(data).then(value => {
-            dispatch(setIsAuthorized(true));
-            console.log(value);
-        }).catch(function (error) {
-            setRegisterError({error: error.response ? error.response.data : error.message, show: true})
-        }).finally(function () {
+        dispatch(register(data))
+            .unwrap()
+            .then(() => {
+                setRegisterError({error: null, show: false});
+                navigate("/");
+            })
+            .catch((error) => {
+                setRegisterError({error: error.message, show: true})
+            }).finally(function () {
             setIsRequestFetching(false);
         });
         new Promise(resolve => setTimeout(resolve, 1000)).then(() => {

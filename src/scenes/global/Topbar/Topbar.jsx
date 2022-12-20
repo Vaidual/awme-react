@@ -8,10 +8,9 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 import {useContext, useState} from "react";
 
 import {ColorModeContext, tokens} from "../../../theme";
-import {useSelector, useStore} from "react-redux";
+import {useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
 import {Link, useNavigate} from "react-router-dom";
-import {Image} from "@mui/icons-material";
 
 const LangDropDown = () => {
     /*    const dispatch = useDispatch();
@@ -93,7 +92,7 @@ const LangDropDown = () => {
 }
 
 const Topbar = () => {
-    const user = useSelector((state) => state.auth.user);
+    const userId = useSelector((state) => state.auth.userId);
 
     const {collapseSidebar} = useProSidebar();
 
@@ -112,7 +111,7 @@ const Topbar = () => {
                     <Link to={"/"}><img src={process.env.PUBLIC_URL + 'assets/images/logo.png'} style={{
                         objectFit: 'scale-down',
                         width: '100px'
-                    }}/></Link>
+                    }} alt={'logo'}/></Link>
                 </Box>
                 <Box>
                     <Button variant="text">{t('global.topbar.how_its_works')}</Button>
@@ -125,7 +124,7 @@ const Topbar = () => {
                         {theme.palette.mode === 'dark' ? <Brightness7Icon/> : <Brightness4Icon/>}
                     </IconButton>
                     <LangDropDown/>
-                    {user ?
+                    {userId ?
                         <IconButton><PersonIcon/></IconButton> :
                         <Button variant="contained"
                                 onClick={() => navigate('/login')}>{t('global.topbar.log_in')}</Button>}
