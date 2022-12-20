@@ -23,15 +23,20 @@ function handleError(error) {
 
 export const authAPI = {
     register(data) {
-        console.log(data)
         return instance.post(`auth/register`, data);
     },
     login(data) {
         return instance.post(`auth/login`, data);
+    },
+    logout() {
+        return instance.delete(`auth/logout`);
     }
 }
 export const userAPI = {
     getMe() {
         return instance.get(`users/me`);
+    },
+    getUsers() {
+        return instance.get(`users`);
     }
 }

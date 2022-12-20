@@ -15,7 +15,7 @@ export const tokens = (mode) => ({
             }
             : {
                 background: {
-                    paperHover: "#f1f1f1",
+                    paperHover: "#eeeeee",
                 },
                 text: {
                     grey: '#a0a0a0'

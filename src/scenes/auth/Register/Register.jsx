@@ -189,7 +189,7 @@ function Register() {
                             </Box>
                             <Button type="submit" color="secondary" variant="contained" fullWidth sx={{height: '44px', marginBottom: '10px'}}
                                     disabled={isRequestFetching}>
-                                {!isRequestFetching ? t('auth.buttons.signUp') : <CircularProgress color={"secondary"} size={'30px'}/>}
+                                {!isRequestFetching ? <Typography>{t('auth.buttons.signUp')}</Typography> : <CircularProgress color={"secondary"} size={'30px'}/>}
                             </Button>
                             <Box display={"flex"} justifyContent={"center"}>
                                 <Typography mr={'4px'} color={tokens(theme.palette.mode).text.grey}>

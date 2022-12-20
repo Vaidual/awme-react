@@ -45,7 +45,7 @@ const Sidebar = () => {
                     >
                         <Item
                             title={t('global.sidebar.users')}
-                            to={"/1"}
+                            to={"/users"}
                             icon={<PeopleIcon/>}
                             selected={selected}
                             setSelected={setSelected}

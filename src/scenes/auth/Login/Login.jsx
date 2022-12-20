@@ -101,7 +101,7 @@ function Login() {
                                 value={values.email}
                                 name="email"
                                 error={!!touched.email && !!errors.email}
-                                helperText={touched.email ? errors.email : ' '}
+                                helperText={touched.email && errors.email ? errors.email : ' '}
                                 sx={{gridColumn: "span 4"}}
                             />
                             <FormControl error={!!touched.password && !!errors.password} sx={{gridColumn: "span 4"}}
@@ -125,7 +125,7 @@ function Login() {
                                         </InputAdornment>
                                     }
                                 />
-                                <FormHelperText>{touched.password ? errors.password : ' '}</FormHelperText>
+                                <FormHelperText>{touched.password && errors.password ? errors.password : ' '}</FormHelperText>
                             </FormControl>
                         </Box>
                         <Box display="flex" mt="6px" flexDirection={"column"}>
@@ -139,7 +139,7 @@ function Login() {
                             <Button type="submit" color="secondary" variant="contained" fullWidth
                                     sx={{height: '44px', marginBottom: '10px'}}
                                     disabled={isRequestFetching}>
-                                {!isRequestFetching ? t('auth.buttons.signIn') :
+                                {!isRequestFetching ? <Typography>{t('auth.buttons.signIn')}</Typography> :
                                     <CircularProgress color={"secondary"} size={'30px'}/>}
                             </Button>
                             <Box display={"flex"} justifyContent={"center"}>

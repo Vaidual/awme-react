@@ -17,7 +17,7 @@ const authSlice = createSlice({
         setUser: (state, action) => {
             state.user = action.payload;
         },
-        setTokenInfo: (state, action) => {
+        setTokenInfo: (state) => {
             const token = localStorage.getItem("accessToken")
             if (!token) return;
             const data = jwt_decode(token)
@@ -27,7 +27,8 @@ const authSlice = createSlice({
                 return;
             }
             state.userId = data.id;
-            state.roles = [...data['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']];
+            const roles = data['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+            state.roles = Array.isArray(roles) ? roles : [roles];
         },
     }
 });
@@ -51,10 +52,22 @@ export const register = createAsyncThunk(
     async (data, thunkAPI) => {
         try {
             const token = await authAPI.register(data).then(response => response.data.token);
-            console.log(token)
             localStorage.setItem("accessToken", token);
             thunkAPI.dispatch(authSlice.actions.setTokenInfo());
 
+        } catch(e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
+
+export const logout = createAsyncThunk(
+    "auth/logout",
+    async (_, thunkAPI) => {
+        try {
+            await authAPI.logout();
+            localStorage.removeItem("accessToken");
+            thunkAPI.dispatch(authSlice.actions.logout());
         } catch(e) {
             return thunkAPI.rejectWithValue(e);
         }
@@ -75,4 +88,4 @@ export const getUser = createAsyncThunk(
 
 export default authSlice.reducer;
 
-export const {logout, setUser, setIsAuthorized, setTokenInfo} = authSlice.actions;
+export const {setUser, setIsAuthorized, setTokenInfo} = authSlice.actions;
