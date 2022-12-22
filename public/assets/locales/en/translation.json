@@ -1,14 +1,22 @@
 {
   "global": {
+    "table": {
+      "actions": {
+        "add": "Add",
+        "delete": "Delete"
+      }
+    },
     "sidebar": {
-      "users": "Users"
+      "users": "Users",
+      "collars": "Collars"
     },
     "topbar": {
       "how_its_works": "How it works",
       "collar": "Collar",
       "app": "App",
       "get_now": "Get now",
-      "log_in": "Log in"
+      "log_in": "Log in",
+      "logout": "Logout"
     },
     "formErrors": {
       "onRequiredError": "Required field",
@@ -44,6 +52,59 @@
         "ForgotThePassword": "Forgot your password?"
       },
       "dontHaveAccount": "Don't have an awme account yet?"
+    }
+  },
+  "users": {
+    "title": {
+      "main": "Users",
+      "sub": "Manage all registered AWME users"
+    },
+    "table": {
+      "rows": {
+        "email": "Email",
+        "firstName": "Name",
+        "lastName": "Surname",
+        "roles": "Roles",
+        "animals": "Animals number",
+        "collars": "Collars number"
+      }
+    }
+  },
+  "collars": {
+    "title": {
+      "main": "Collars",
+      "sub": "Manage collars in production"
+    },
+    "table": {
+      "rows": {
+        "inUse": "Activated",
+        "userId": "User ID",
+        "animal": "Linked animal"
+      }
+    },
+    "modals": {
+      "add": {
+        "title": "Add collar",
+        "description": "Collar identifiers must be unique!",
+        "field": "Identifier",
+        "addBtn": "Add",
+        "close": "Close",
+        "alerts": {
+          "success": "Collar successfully added!",
+          "minLength": "The minimum length of identifier is one symbol"
+        }
+      },
+      "delete": {
+        "title": "Delete selected collars?",
+        "description": "Collars will be deleted permanently.",
+        "deleteBtn": "Delete",
+        "cancelBtn": "Cancel",
+        "alerts": {
+          "success": "Collars successfully deleted.",
+          "inUseError": "You cannot delete collars which already in use!",
+          "zeroSelected": "You must pick at least one collar to delete"
+        }
+      }
     }
   }
 }

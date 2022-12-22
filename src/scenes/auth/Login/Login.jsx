@@ -16,7 +16,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {useTranslation} from "react-i18next";
 import {tokens} from "../../../theme";
-import {login} from "../../../redux/slices/authSlice";
+import {login} from "../../../redux/auth/authSlice";
 import {useDispatch} from "react-redux";
 
 const defaultValues = {

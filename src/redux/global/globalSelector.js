@@ -1,0 +1,1 @@
+export const selectLanguages = (state) => state.global.languages;

@@ -13,14 +13,17 @@ import {ColorModeContext, tokens} from "../../../theme";
 import {useSelector} from "react-redux";
 import {useTranslation} from "react-i18next";
 import {Link, useNavigate} from "react-router-dom";
-import {logout} from "../../../redux/slices/authSlice";
-import _ from "underscore";
+import {logout} from "../../../redux/auth/authSlice";
+import {ClickAwayListener} from "@mui/base";
+import {selectLanguages} from "../../../redux/global/globalSelector";
+import {selectUserId} from "../../../redux/auth/authSelector";
 
 const OptionMenu = (props) => {
     const {width = "10em"} = props;
     const theme = useTheme();
     return (
         <Box sx={{
+            zIndex: '5',
             position: 'absolute',
             opacity: props.isOpened ? 1 : 0,
             display: props.isOpened ? 'block' : 'none',
@@ -70,40 +73,43 @@ const LangDropDown = () => {
         toggleMenu();
     }
 
-    let languages = useSelector((state) => state.sidebar.languages)
+    let languages = useSelector(selectLanguages)
         .map((lang) => {
             return (
-            <ListItem
-                sx={{
-                    cursor: 'pointer',
-                    padding: '0.7em 0.5em',
-                    margin: '0.3em 0',
-                    ":hover": {color: theme.palette.text.primary},
-                    ".active": {color: 'deepskyblue'},
-                    color: lang.key === i18n.language ? theme.palette.primary.main : tokens().text.grey
-                }}
-                key={lang.key}
-                onClick={() => {
-                    onLangChange(lang.key)
-                }}
-                className={`${lang.key === i18n.language && 'active'}`}>
-                {lang.name}</ListItem>
+                <ListItem
+                    sx={{
+                        cursor: 'pointer',
+                        padding: '0.7em 0.5em',
+                        margin: '0.3em 0',
+                        ":hover": {color: theme.palette.text.primary},
+                        ".active": {color: 'deepskyblue'},
+                        color: lang.key === i18n.language ? theme.palette.primary.main : tokens().text.grey
+                    }}
+                    key={lang.key}
+                    onClick={() => {
+                        onLangChange(lang.key)
+                    }}
+                    className={`${lang.key === i18n.language && 'active'}`}>
+                    {lang.name}</ListItem>
             )
         })
 
     return (
-        <Box sx={{boxSizing: 'border-box'}}>
-            <Box>
-                <IconButton onClick={() => toggleMenu()}>
-                    <LanguageIcon/>
-                </IconButton>
+        <ClickAwayListener onClickAway={() => setIsMenuOpened(false)}>
+            <Box sx={{boxSizing: 'border-box'}}>
+                <Box>
+                    <IconButton onClick={() => toggleMenu()}>
+                        <LanguageIcon/>
+                    </IconButton>
+                </Box>
+                <OptionMenu isOpened={isMenuOpened} translate={-60} width={'12em'}>{languages}</OptionMenu>
             </Box>
-            <OptionMenu isOpened={isMenuOpened} translate={-60} width={'12em'}>{languages}</OptionMenu>
-        </Box>
+        </ClickAwayListener>
     )
 }
 
 function UserMenu() {
+    const {t} = useTranslation();
     const theme = useTheme();
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -121,7 +127,7 @@ function UserMenu() {
         navigate("login");
     }
 
-    let menuItems = [{label: 'logout', icon: <LogoutIcon/>, onClick: onLogoutClick}]
+    let menuItems = [{label: t('global.topbar.logout'), icon: <LogoutIcon/>, onClick: onLogoutClick}]
         .map((item) => {
             return (
                 <Button
@@ -147,19 +153,21 @@ function UserMenu() {
         })
 
     return (
-        <Box sx={{boxSizing: 'border-box'}}>
-            <Box>
-                <IconButton onClick={() => toggleMenu()}>
-                    <PersonIcon/>
-                </IconButton>
+        <ClickAwayListener onClickAway={() => setIsMenuOpened(false)}>
+            <Box sx={{boxSizing: 'border-box'}}>
+                <Box>
+                    <IconButton onClick={() => toggleMenu()}>
+                        <PersonIcon/>
+                    </IconButton>
+                </Box>
+                <OptionMenu isOpened={isMenuOpened} translate={-72}>{menuItems} </OptionMenu>
             </Box>
-            <OptionMenu isOpened={isMenuOpened} translate={-72}>{menuItems} </OptionMenu>
-        </Box>
+        </ClickAwayListener>
     );
 }
 
 const Header = () => {
-    const userId = useSelector((state) => state.auth.userId, _.isEqual);
+    const userId = useSelector(selectUserId);
 
     const {collapseSidebar} = useProSidebar();
 

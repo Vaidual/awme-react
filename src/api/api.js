@@ -40,3 +40,17 @@ export const userAPI = {
         return instance.get(`users`);
     }
 }
+
+export const collarAPI = {
+    getCollars() {
+        return instance.get(`collars`);
+    },
+    postCollar(data) {
+        const config = { headers: {'Content-Type': 'application/json'} };
+        return instance.post(`collars`, data, config);
+    },
+    deleteCollar(id) {
+        return instance.delete(`collars/${id}`);
+    }
+}
+

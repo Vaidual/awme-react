@@ -1,6 +1,9 @@
 import {createTheme} from '@mui/material/styles';
 import {createContext, useMemo, useState} from "react";
 import {useMediaQuery} from "@mui/material";
+import {enUS, ukUA, zhCN} from "@mui/x-data-grid";
+import { ukUA as coreukUA, enUS as coreenUS } from '@mui/material/locale';
+import {useTranslation} from "react-i18next";
 
 export const tokens = (mode) => ({
     ...(mode === "dark"
@@ -40,14 +43,6 @@ const themeOptions = (mode) => {
                         background: {
                             default: '#030303',
                             paper: '#1a1a1b',
-                        },
-                        common: {
-                            paperHover: '#212121'
-                        },
-                        info: {
-                            main: '#c9e7ff',
-                            light: '#fcfeff',
-                            dark: '#ffffff'
                         }
                     }
                     : {
@@ -59,9 +54,6 @@ const themeOptions = (mode) => {
                         },
                         background: {
                             paper: '#F5F5F5',
-                        },
-                        common: {
-                            paperHover: '#212121'
                         }
                     }
             ),
@@ -74,7 +66,7 @@ const themeOptions = (mode) => {
     }
 }
 export const ColorModeContext = createContext({
-    toggleColorMode: (prevMode) => {},
+    toggleColorMode: () => {},
 });
 
 export const useToggleMode = () => {
@@ -94,10 +86,23 @@ export const useToggleMode = () => {
         [],
     );
 
+    const {i18n} = useTranslation();
+    let lang;
+    switch (i18n.language) {
+        case 'en':
+            lang = [enUS, coreenUS]
+            break;
+        case 'ua':
+            lang = [ukUA, coreukUA]
+            break;
+        default:
+            lang = [enUS, coreenUS]
+            break;
+    }
     const theme = useMemo(
         () =>
-            createTheme(themeOptions(mode)),
-        [mode],
+            createTheme(themeOptions(mode), ...lang),
+        [i18n.language, mode],
     );
 
     return [theme, colorMode];

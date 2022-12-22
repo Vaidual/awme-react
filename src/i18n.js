@@ -4,7 +4,7 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import HttpApi from "i18next-http-backend";
 import Backend from 'i18next-http-backend';
 import {useDispatch} from "react-redux";
-import {setLanguage} from "./redux/slices/globalSlice";
+import {setLanguage} from "./redux/global/globalSlice";
 
 i18n
     .use(initReactI18next)
