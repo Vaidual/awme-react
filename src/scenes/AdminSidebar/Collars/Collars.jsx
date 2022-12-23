@@ -1,16 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
     Box, Button,
     Dialog, DialogActions, DialogContent,
     DialogContentText,
     DialogTitle,
     Icon,
-    IconButton, Snackbar,
-    TextField,
+    IconButton, TextField,
     Typography,
     useTheme
 } from "@mui/material";
-import MuiAlert from '@mui/material/Alert';
 import {tokens} from "../../../theme";
 import {useDispatch} from "react-redux";
 import SectionHeader from "../../../components/Header/SectionHeader";
@@ -31,6 +29,10 @@ import AddIcon from '@mui/icons-material/Add';
 import LoadingButton from '@mui/lab/LoadingButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {useTranslation} from "react-i18next";
+import {ModalContent} from "../../../components/Forms/Modals/ModalContent";
+import {Alert} from "../../../components/Feedback/Alert";
+import useAuth from "../../../hooks/useAuth";
+import CustomToolbar from "../../../components/Forms/Table/CustomToolbar";
 
 function Collars() {
     const {t} = useTranslation();
@@ -54,11 +56,12 @@ function Collars() {
     const columns = [
         {field: 'id', headerName: "ID", type: 'number', width: 80},
         {
-            field: 'isUse',
+            field: 'inUse',
             headerName: t('collars.table.rows.inUse'),
             flex: 1,
             headerAlign: 'center',
             align: 'center',
+            type: 'boolean',
             renderCell: ({row: {inUse}}) => {
                 return (
                     <Box p={'5px'} borderRadius={4} border={`1px solid`}
@@ -70,24 +73,41 @@ function Collars() {
             }
         },
         {
-            field: 'user', headerName: t('collars.table.rows.userId'), headerAlign: 'center',
-            align: 'center', valueFormatter: (params) => {
-                return params.value ? params.value.id : '';
+            field: 'user',
+            type: 'number',
+            headerName: t('collars.table.rows.userId'),
+            headerAlign: 'center',
+            align: 'center',
+            valueGetter: ({value}) => {
+                return value ? value.id : 0;
+            },
+            valueFormatter: ({value}) => {
+                return value ? value.id : '';
             },
         },
         {
-            field: 'animal', headerName: t('collars.table.rows.animal'), flex: 1, headerAlign: 'center',
-            align: 'center', valueFormatter: (params) => {
-                return params.value ? params.value.name : '';
+            field: 'animal',
+            headerName: t('collars.table.rows.animal'),
+            flex: 1,
+            headerAlign: 'center',
+            align: 'center',
+            valueGetter: ({value}) => {
+                return value ? value.name : '';
             },
         },
     ]
 
-    const [showAlert, setShowAlert] = useState({severity: "", message: '', show: false});
+    const [alert, setAlert] = useState(null);
+    const ToolbarButtons =
+            <>
+                <AddCollarModal setAlert={setAlert} getCollars={getCollars}/>
+                <DeleteCollarModal setAlert={setAlert} selectedCollars={selectedRows}
+                                   getCollars={getCollars}/>
+            </>
 
     return (
         <Box m={'20px'} position={"relative"}>
-            <Box >
+            <Box>
                 <SectionHeader title={t('collars.title.main')} subtitle={t('collars.title.sub')}/>
             </Box>
             <Box display={"flex"} justifyContent={"center"}>
@@ -116,62 +136,20 @@ function Collars() {
                             }}
                             checkboxSelection
                             components={{Toolbar: CustomToolbar}}
-                            componentsProps={{toolbar: {getCollars: getCollars, selectedCollars: selectedRows, setShowAlert}}}
+                            componentsProps={{
+                                toolbar: {
+                                    updateTable: getCollars,
+                                    actions: ToolbarButtons
+                                }
+                            }}
                             columns={columns}
                             rows={collars}
                         />
                         : <Loader/>}
                 </Box>
             </Box>
-            <Alert showAlert={showAlert} setShowAlert={setShowAlert}/>
+            <Alert alert={alert} setAlert={setAlert}/>
         </Box>
-    );
-}
-
-export const Alert = (props) => {
-    const MAlert = React.forwardRef(function MAlert(props, ref) {
-        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-    });
-    const handleAlertClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        props.setShowAlert(0);
-    }
-    return (
-        <Snackbar open={props.showAlert.show} autoHideDuration={6000} onClose={handleAlertClose}>
-            <MAlert onClose={handleAlertClose} severity={props.showAlert.severity} sx={{width: '100%'}}>
-                {props.showAlert.message}
-            </MAlert>
-        </Snackbar>
-    )
-}
-
-function CustomToolbar(props) {
-
-    return (
-        <GridToolbarContainer sx={{display: 'flex', justifyContent: 'space-between'}}>
-            <Box sx={{
-                "> *": {
-                    marginRight: '10px'
-                }
-            }}>
-                <GridToolbarColumnsButton/>
-                <GridToolbarFilterButton/>
-                <GridToolbarDensitySelector/>
-            </Box>
-            <Box sx={{
-                "> *": {
-                    marginLeft: '10px'
-                }
-            }}>
-                <AddCollarModal setShowAlert={props.setShowAlert} getCollars={props.getCollars}/>
-                <DeleteCollarModal setShowAlert={props.setShowAlert} selectedCollars={props.selectedCollars} getCollars={props.getCollars}/>
-                <GridToolbarExport/>
-                <IconButton onClick={() => props.getCollars()}><ReplayIcon color={"primary"}/></IconButton>
-            </Box>
-
-        </GridToolbarContainer>
     );
 }
 
@@ -188,20 +166,20 @@ const AddCollarModal = (props) => {
 
     const handleSubmit = () => {
         if (newCollarValue === "") {
-            props.setShowAlert({show: true, severity: "error", message: t('collars.modals.add.alerts.minLength')});
+            props.setAlert({severity: "error", children: t('collars.modals.add.alerts.minLength')});
             return;
         }
         setIsFetching(true);
         dispatch(postCollar(newCollarValue))
             .unwrap()
             .then((data) => {
-                props.setShowAlert({show: true, severity: "success", message: t('collars.modals.add.alerts.success')});
+                props.setAlert({severity: "success", children: t('collars.modals.add.alerts.success')});
                 props.getCollars();
                 setOpen(false);
                 setNewCollarValue("");
             })
             .catch((error) => {
-                props.setShowAlert({show: true, severity: "error", message: error.message})
+                props.setAlert({severity: "error", children: error.message})
             }).finally(function () {
             setIsFetching(false);
         });
@@ -218,13 +196,10 @@ const AddCollarModal = (props) => {
 
     return (
         <>
-            <Button onClick={handleClickOpen} startIcon={<AddIcon color={"primary"}/>}>{t('global.table.actions.add')}</Button>
+            <Button onClick={handleClickOpen}
+                    startIcon={<AddIcon color={"primary"}/>}>{t('global.table.actions.add')}</Button>
             <Dialog open={open} onClose={handleModalClose}>
-                <DialogTitle>{t('collars.modals.add.title')}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        {t('collars.modals.add.description')}
-                    </DialogContentText>
+                <ModalContent title={t('collars.modals.add.title')} description={t('collars.modals.add.description')}>
                     <TextField
                         value={newCollarValue}
                         onChange={handleValueChange}
@@ -235,7 +210,7 @@ const AddCollarModal = (props) => {
                         fullWidth
                         variant="outlined"
                     />
-                </DialogContent>
+                </ModalContent>
                 <DialogActions>
                     <LoadingButton loading={isFetching} variant={"contained"}
                                    onClick={handleSubmit}>{t('collars.modals.add.addBtn')}</LoadingButton>
@@ -244,7 +219,6 @@ const AddCollarModal = (props) => {
             </Dialog>
         </>
     )
-
 }
 
 const DeleteCollarModal = (props) => {
@@ -255,10 +229,13 @@ const DeleteCollarModal = (props) => {
     const [isFetching, setIsFetching] = useState(false);
     const handleClickOpen = () => {
         if (props.selectedCollars.some(c => c.inUse === true)) {
-            props.setShowAlert({show: true, severity: "error", message: t('collars.modals.delete.alerts.inUseError')});
+            props.setAlert({severity: "error", children: t('collars.modals.delete.alerts.inUseError')});
             return;
         } else if (props.selectedCollars.length === 0) {
-            props.setShowAlert({show: true, severity: "error", message: t('collars.modals.delete.alerts.zeroSelected')});
+            props.setAlert({
+                severity: "error",
+                children: t('collars.modals.delete.alerts.zeroSelected')
+            });
             return;
         }
         setOpen(true);
@@ -270,12 +247,15 @@ const DeleteCollarModal = (props) => {
             dispatch(deleteCollar(props.selectedCollars[i].id))
                 .unwrap()
                 .then((data) => {
-                    props.setShowAlert({show: true, severity: "success", message: t('collars.modals.delete.alerts.success')});
+                    props.setAlert({
+                        severity: "success",
+                        children: t('collars.modals.delete.alerts.success')
+                    });
                     props.getCollars()
                     setOpen(false);
                 })
                 .catch((error) => {
-                    props.setShowAlert({show: true, severity: "error", message: error.message})
+                    props.setAlert({severity: "error", children: error.message})
                 }).finally(function () {
             });
         }
@@ -289,7 +269,8 @@ const DeleteCollarModal = (props) => {
 
     return (
         <>
-            <Button onClick={handleClickOpen} startIcon={<DeleteIcon color={"primary"}/>}>{t('global.table.actions.delete')}</Button>
+            <Button onClick={handleClickOpen}
+                    startIcon={<DeleteIcon color={"primary"}/>}>{t('global.table.actions.delete')}</Button>
             <Dialog open={open} onClose={handleModalClose}>
                 <DialogTitle>{t('collars.modals.delete.title')}</DialogTitle>
                 <DialogContent>

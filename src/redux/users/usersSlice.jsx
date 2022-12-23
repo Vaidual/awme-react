@@ -24,6 +24,18 @@ export const getUsersData = createAsyncThunk(
     }
 );
 
+export const patchUserRole = createAsyncThunk(
+    "patchUserRole",
+    async (data, thunkAPI) => {
+        try {
+            return await userAPI.patchUser(data.id, data.data).then(response => response.data);
+        } catch(e) {
+            return thunkAPI.rejectWithValue(e);
+        }
+    }
+);
+
+
 export default usersSlice.reducer;
 
 export const {} = usersSlice.actions;

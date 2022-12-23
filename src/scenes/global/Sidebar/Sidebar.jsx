@@ -2,6 +2,7 @@ import {Sidebar as ProSidebar, Menu, MenuItem, menuClasses} from "react-pro-side
 import {Box, SvgIcon, Typography, useTheme} from "@mui/material";
 import {Link} from "react-router-dom";
 import PeopleIcon from '@mui/icons-material/People';
+import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
 import {useTranslation} from "react-i18next";
 import {useState} from "react";
 import {tokens} from "../../../theme";
@@ -46,7 +47,7 @@ const Sidebar = () => {
                         <Item
                             title={t('global.sidebar.users')}
                             to={"/users"}
-                            icon={<PeopleIcon/>}
+                            icon={<AccessibilityNewIcon/>}
                             selected={selected}
                             setSelected={setSelected}
                         />
@@ -54,6 +55,13 @@ const Sidebar = () => {
                             title={t('global.sidebar.collars')}
                             to={"/collars"}
                             icon={<CollarIcon/>}
+                            selected={selected}
+                            setSelected={setSelected}
+                        />
+                        <Item
+                            title={t('global.sidebar.profiles')}
+                            to={"/profiles"}
+                            icon={<PeopleIcon/>}
                             selected={selected}
                             setSelected={setSelected}
                         />

@@ -17,6 +17,7 @@ import {ROLES} from "./config/roles";
 import RequireBeUnauthorized from "./features/auth/RequireBeUnauthorized";
 import Collars from "./scenes/AdminSidebar/Collars/Collars";
 import {useEffect} from "react";
+import Profiles from "./scenes/AdminSidebar/Profiles/Profiles";
 
 function App() {
     const [theme, colorMode] = useToggleMode();
@@ -32,7 +33,7 @@ function App() {
                             <CssBaseline enableColorScheme />
                             <Header/>
                             <main className={"main"}>
-                                {roles.includes("Admin") && <Sidebar/>}
+                                {roles.some(role => [ROLES.Manager, ROLES.Admin].includes(role)) && <Sidebar/>}
                                 <Box className={"content"} >
                                     <Routes>
                                         <Route path="/" element={<Home/>}/>
@@ -43,6 +44,7 @@ function App() {
                                         <Route element={<RequireAuth allowedRoles={[ROLES.Manager, ROLES.Admin]}/> }>
                                             <Route path="/users" element={<Users/>}/>
                                             <Route path="/collars" element={<Collars/>}/>
+                                            <Route path="/profiles" element={<Profiles/>}/>
                                         </Route>
                                     </Routes>
                                 </Box>

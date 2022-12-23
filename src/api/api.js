@@ -38,6 +38,9 @@ export const userAPI = {
     },
     getUsers() {
         return instance.get(`users`);
+    },
+    patchUser(id, data) {
+        return instance.patch(`users/${id}/${data}`);
     }
 }
 
@@ -51,6 +54,15 @@ export const collarAPI = {
     },
     deleteCollar(id) {
         return instance.delete(`collars/${id}`);
+    }
+}
+
+export const profilesAPI = {
+    getProfiles() {
+        return instance.get(`profiles`);
+    },
+    patchProfileBan(id, data) {
+        return instance.patch(`profiles/ban/${id}`, data);
     }
 }
 

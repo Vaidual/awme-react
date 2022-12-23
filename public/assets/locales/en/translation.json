@@ -8,7 +8,8 @@
     },
     "sidebar": {
       "users": "Users",
-      "collars": "Collars"
+      "collars": "Collars",
+      "profiles": "Profiles"
     },
     "topbar": {
       "how_its_works": "How it works",
@@ -23,6 +24,17 @@
       "onEmailError": "Email in incorrect format",
       "onPasswordMatchError": "Password not matching",
       "onMinLengthError": "Field must contain al least {{count}} symbols"
+    },
+    "modals": {
+      "confirm": {
+        "title": "Are you sure?",
+        "description": "Pressing 'Yes' will change {{field}} from '{{from}}' to '{{to}}'.",
+        "confirm": "Yes",
+        "cancel": "No",
+        "alert": {
+          "success": "Changes have been successfully saved."
+        }
+      }
     }
   },
   "auth": {
@@ -104,6 +116,45 @@
           "inUseError": "You cannot delete collars which already in use!",
           "zeroSelected": "You must pick at least one collar to delete"
         }
+      }
+    }
+  },
+  "profiles": {
+    "title": {
+      "main": "Profiles",
+      "sub": "Manage all registered AWME profiles"
+    },
+    "table": {
+      "rows": {
+        "username": "Username",
+        "nickname": "Nickname",
+        "gender": "Gender",
+        "location": "Location",
+        "userId": "User ID",
+        "followers": "Followers number",
+        "following": "Subscriptions number",
+        "isBanned": "Ban status",
+        "banEnd": "Ban end"
+      }
+    },
+    "modals": {
+      "ban": {
+        "banBtn": "Block",
+        "extendBanBtn": "Extend block",
+        "title": "Block profile",
+        "description": "Set/extend time of profile ban",
+        "canselBtn": "Cancel",
+        "periods": {
+          "day": "Day",
+          "week": "Week",
+          "month": "Month",
+          "year": "Year"
+        }
+      },
+      "unban": {
+        "unbanBtn": "Unblock",
+        "title": "Unblock profile",
+        "description": "Do you really want to unblock profile?"
       }
     }
   }
