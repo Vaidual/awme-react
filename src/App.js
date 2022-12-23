@@ -4,7 +4,7 @@ import {Box, CssBaseline, ThemeProvider} from "@mui/material";
 import {ProSidebarProvider} from "react-pro-sidebar";
 import {ColorModeContext, useToggleMode} from "./theme";
 import {useDispatch, useSelector} from "react-redux";
-import {Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import Register from "./scenes/auth/Register/Register";
 import Login from "./scenes/auth/Login/Login";
 import Home from "./scenes/home/Home";
@@ -46,6 +46,7 @@ function App() {
                                             <Route path="/collars" element={<Collars/>}/>
                                             <Route path="/profiles" element={<Profiles/>}/>
                                         </Route>
+                                        <Route path="" element={<Home/>} />
                                     </Routes>
                                 </Box>
                             </main>

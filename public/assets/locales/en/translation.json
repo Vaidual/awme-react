@@ -157,5 +157,9 @@
         "description": "Do you really want to unblock profile?"
       }
     }
+  },
+  "home": {
+    "title": "Introducing AWME",
+    "titleDescription": "The new modern technology collar"
   }
 }

@@ -14,10 +14,7 @@ import {useDispatch} from "react-redux";
 import SectionHeader from "../../../components/Header/SectionHeader";
 import {
     DataGrid,
-    GridToolbarColumnsButton,
-    GridToolbarContainer,
-    GridToolbarDensitySelector, GridToolbarExport,
-    GridToolbarFilterButton
+    GridToolbarDensitySelector, GridToolbarExport
 } from "@mui/x-data-grid";
 import Loader from "../../../components/Loader/Loader";
 import {deleteCollar, getCollarsData, postCollar} from "../../../redux/collars/collarsSlice";
@@ -54,7 +51,7 @@ function Collars() {
         getCollars();
     }, []);
     const columns = [
-        {field: 'id', headerName: "ID", type: 'number', width: 80},
+        {field: 'id', headerName: "ID", type: 'number', width: 120},
         {
             field: 'inUse',
             headerName: t('collars.table.rows.inUse'),
