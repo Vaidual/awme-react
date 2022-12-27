@@ -13,7 +13,7 @@ function Home() {
                 <video style={{width: '100%', height: '100%', objectFit: 'cover'}} src={heroVideo} autoPlay={true} muted={true} playsInline={true} loop={true}>
                 </video>
             </Box>
-            <Box
+            <Box textAlign={"left"}
                 sx={{
                     marginLeft: '100px',
                     position: 'absolute',
@@ -23,7 +23,6 @@ function Home() {
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
-                    alignItems: 'center'
                 }}
             >
                 <Typography fontWeight={'bold'} variant="h2" color='white'>{t('home.title')}</Typography>

@@ -104,11 +104,11 @@ function Collars() {
 
     return (
         <Box m={'20px'} position={"relative"}>
-            <Box>
+            <Box margin={'0 auto'} width={1000}>
                 <SectionHeader title={t('collars.title.main')} subtitle={t('collars.title.sub')}/>
             </Box>
             <Box display={"flex"} justifyContent={"center"}>
-                <Box display={"flex"} justifyContent={"center"} height={'70vh'} width={1000} sx={{
+                <Box display={"flex"} justifyContent={"center"} alignItems={"center"} height={'70vh'} width={1000} sx={{
                     "& .MuiDataGrid-root": {
                         border: 'none'
                     },

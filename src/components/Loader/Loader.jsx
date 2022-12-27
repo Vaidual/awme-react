@@ -9,8 +9,7 @@ const Loader = () => {
             alignItems="center"
             justifyContent="center"
             sx={{
-                width: '70vw',
-                height: '70vh'
+                height: '100%'
             }}>
             <Box sx={{'div:after':{background: theme.palette.secondary.main}}} className={styles.ldsRoller}>
                 <div></div>

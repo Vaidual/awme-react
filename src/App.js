@@ -46,7 +46,7 @@ function App() {
                                             <Route path="/collars" element={<Collars/>}/>
                                             <Route path="/profiles" element={<Profiles/>}/>
                                         </Route>
-                                        <Route path="" element={<Home/>} />
+                                        <Route path="*" element={<Navigate to={'/'}/>} />
                                     </Routes>
                                 </Box>
                             </main>

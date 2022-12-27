@@ -179,7 +179,7 @@ const Header = () => {
     const navigate = useNavigate();
 
     return (
-        <Box width={"100%"} top={0}>
+        <Box width={"100%"} top={300}>
             <Box px="12px" py="10px" display={"flex"} justifyContent={"space-between"} alignItems={"center"}>
                 <Box display={"flex"}>
                     <IconButton onClick={() => collapseSidebar()}><MenuIcon/></IconButton>
