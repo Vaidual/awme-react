@@ -12,4 +12,11 @@ Front-End React client for animal collar managment/promotion system.
 2. Clone this repo.
 3. Run `npm i` in console.
 4. Run `npm start` in console.
-5. Done!
+5. Wait until web page opens and login to admin panel with this credits: email - `admin@admin.com`, password - `string`.
+6. Done!
+
+## Screenshots
+
+![App Screenshot](https://i.imgur.com/eVeXFtb.png)
+![App Screenshot](https://i.imgur.com/JWClmum.png)
+![App Screenshot](https://i.imgur.com/f1mssLY.png)
